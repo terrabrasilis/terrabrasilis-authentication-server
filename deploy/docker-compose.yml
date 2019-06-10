@@ -1,0 +1,35 @@
+version: '3.2'
+services:
+  authentication-server:
+    image: terrabrasilis/authentication-server:v01
+    restart: on-failure
+    ports:
+      - "8000"
+    secrets:
+      - postgres.user.authentication.server
+      - postgres.pass.authentication.server
+      - postgres.database-homo.authentication.server
+      - postgres.host.authentication.server
+      - postgres.port.authentication.server
+    environment:
+      PG_USER_AUTHENTICATION_SERVER_SECRET: /run/secrets/postgres.user.authentication.server
+      PG_PASSWORD_AUTHENTICATION_SERVER_SECRET: /run/secrets/postgres.pass.authentication.server
+      PG_DATABASE_AUTHENTICATION_SERVER_SECRET: /run/secrets/postgres.database-homo.authentication.server
+      PG_HOST_AUTHENTICATION_SERVER_SECRET: /run/secrets/postgres.host.authentication.server
+      PG_PORT_AUTHENTICATION_SERVER_SECRET: /run/secrets/postgres.port.authentication.server
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+secrets:
+  postgres.user.authentication.server:
+    external: true
+  postgres.database-homo.authentication.server:
+    external: true
+  postgres.host.authentication.server:
+    external: true
+  postgres.port.authentication.server:
+    external: true
+  postgres.pass.authentication.server:
+    external: true
